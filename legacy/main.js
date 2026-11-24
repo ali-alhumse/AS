@@ -1,7 +1,7 @@
-const STORAGE_KEY = "asma_birthday";
+const STORAGE_KEY = "asma_birthday"; 
 const app = document.getElementById("app");
 
-const slides = [];
+const slides = []; 
 let currentSlideIndex = 0;
 
 
@@ -12,31 +12,31 @@ slides.push(cakeSlide);
 slides.push(gallerySlide);
 
 
-if (localStorage.getItem(STORAGE_KEY)) {
-    renderExitScreen();
-} else {
-    startProject();
+if (localStorage.getItem(STORAGE_KEY)) { 
+    renderExitScreen(); 
+} else { 
+    startProject(); 
 }
 
-function startProject() {
-    currentSlideIndex = 0;
-    renderStartScreen();
+function startProject() { 
+    currentSlideIndex = 0; 
+    renderStartScreen(); 
 }
 
-function nextSlide() {
-    currentSlideIndex++;
+function nextSlide() { 
+    currentSlideIndex++; 
     console.log("Next slide called. Current index:", currentSlideIndex, "Total slides:", slides.length);
-
-    if (currentSlideIndex < slides.length) {
-        slides[currentSlideIndex]();
-    } else {
-        endProject();
-    }
+    
+    if (currentSlideIndex < slides.length) { 
+        slides[currentSlideIndex](); 
+    } else { 
+        endProject(); 
+    } 
 }
 
-function endProject() {
-    localStorage.setItem(STORAGE_KEY, "true");
-    renderExitScreen();
+function endProject() { 
+    localStorage.setItem(STORAGE_KEY, "true"); 
+    renderExitScreen(); 
 }
 
 function renderStartScreen() {
@@ -244,11 +244,11 @@ function renderStartScreen() {
   }
 function balloonSlide() {
     console.log("Balloon slide (fireworks) loaded");
-
+    
     app.innerHTML = `
         <div style="position: relative; width: 100%; height: 100vh; background: #111;">
             <canvas id="balloonCanvas"></canvas>
-            <button class="secondary-btn" id="skipBalloon"
+            <button class="secondary-btn" id="skipBalloon" 
                 style="
                 position: absolute;
                 bottom: 25%;
@@ -263,7 +263,7 @@ function balloonSlide() {
     `;
 
     const canvas = document.getElementById('balloonCanvas');
-
+    
     let w = (canvas.width = window.innerWidth),
         h = (canvas.height = window.innerHeight),
         ctx = canvas.getContext("2d"),
@@ -340,7 +340,7 @@ function balloonSlide() {
 
         this.reset();
     }
-
+    
     Letter.prototype.reset = function () {
         this.phase = "firework";
         this.tick = 0;
@@ -353,7 +353,7 @@ function balloonSlide() {
             opts.fireworkBaseLineWidth + opts.fireworkAddedLineWidth * Math.random();
         this.prevPoints = [[0, hh, 0]];
     };
-
+    
     Letter.prototype.step = function () {
         if (this.phase === "firework") {
             if (!this.spawned) {
@@ -564,7 +564,7 @@ function balloonSlide() {
             }
         }
     };
-
+    
     function Shard(x, y, vx, vy, color) {
         var vel =
         opts.fireworkShardBaseVel + opts.fireworkShardAddedVel * Math.random();
@@ -583,7 +583,7 @@ function balloonSlide() {
         this.size =
         opts.fireworkShardBaseSize + opts.fireworkShardAddedSize * Math.random();
     }
-
+    
     Shard.prototype.step = function () {
         this.x += this.vx;
         this.y += this.vy += opts.gravity;
@@ -626,7 +626,7 @@ function balloonSlide() {
     // التعديل الوحيد: إضافة منطق للتحقق من انتهاء الدورة
     let animationId;
     let hasCompletedOnce = false;
-
+    
     function anim() {
         animationId = window.requestAnimationFrame(anim);
 
@@ -646,7 +646,7 @@ function balloonSlide() {
         // هنا التعديل: بعد انتهاء الدورة الأولى، توقف وانتقل للشريحة التالية
         if (done && !hasCompletedOnce) {
             hasCompletedOnce = true;
-
+            
             // انتظر 2 ثانية ثم انتقل للشريحة التالية
             setTimeout(() => {
                 cancelAnimationFrame(animationId);
@@ -654,7 +654,7 @@ function balloonSlide() {
                 nextSlide();
             }, 2000);
         }
-
+        
         // لا تعيد التشغيل بعد الدورة الأولى
         if (done && hasCompletedOnce) {
             // فقط توقف الرسوم المتحركة
@@ -691,7 +691,7 @@ function balloonSlide() {
         hh = h / 2;
 
         ctx.font = opts.charSize + "px Verdana";
-
+        
         // إعادة إنشاء الحروف بالأبعاد الجديدة
         letters = [];
         for (let i = 0; i < opts.strings.length; ++i) {
@@ -710,7 +710,7 @@ function balloonSlide() {
             }
         }
     }
-
+    
     window.addEventListener("resize", handleResize);
 
     // زر التخطي
@@ -723,7 +723,7 @@ function balloonSlide() {
 
 function heartSlide() {
     console.log("Heart slide loaded");
-
+    
     app.innerHTML = `
         <div style="position: relative; width: 100%; height: 100vh; background: linear-gradient(to bottom, #1a0a1f, #0a0515);">
             <canvas id="heartCanvas"></canvas>
@@ -733,7 +733,7 @@ function heartSlide() {
                 bottom: 20%;
                 left:50%;
                 transform:translate(-50%, 50%);
-                z-index:10;
+                z-index:10; 
                 background: rgba(255, 105, 180, 0.2);
                 border: 2px solid #ff69b4;
                 color: white;">
@@ -744,7 +744,7 @@ function heartSlide() {
 
     const canvas = document.getElementById('heartCanvas');
     const ctx = canvas.getContext('2d');
-
+    
     // ضبط حجم الكانفاس
     function resizeCanvas() {
         const ratio = window.devicePixelRatio || 1;
@@ -754,14 +754,14 @@ function heartSlide() {
         canvas.style.height = window.innerHeight + "px";
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     }
-
+    
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-
+    
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
     const heartSize = Math.min(window.innerWidth, window.innerHeight) * 0.4;
-
+    
     // معادلة القلب البارامترية الصحيحة
     function heartPoint(t, size = 1) {
         // المعادلة: x = 16 sin³(t), y = 13 cos(t) - 5 cos(2t) - 2 cos(3t) - cos(4t)
@@ -772,16 +772,16 @@ function heartSlide() {
             y: centerY + y * heartSize * 0.04 * size
         };
     }
-
+    
     // إنشاء جسيمات القلب
     const particles = [];
     const particleCount = 600;
-
+    
     for (let i = 0; i < particleCount; i++) {
         const t = Math.random() * Math.PI * 2;
         const size = 0.5 + Math.random() * 0.5;
         const point = heartPoint(t, size);
-
+        
         particles.push({
             x: point.x,
             y: point.y,
@@ -795,19 +795,19 @@ function heartSlide() {
             timeOffset: Math.random() * Math.PI * 2
         });
     }
-
+    
     // تفاعل الماوس
     let mouseX = centerX;
     let mouseY = centerY;
     let isInteracting = false;
-
+    
     canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
         mouseX = e.clientX - rect.left;
         mouseY = e.clientY - rect.top;
         isInteracting = true;
     });
-
+    
     canvas.addEventListener('touchmove', (e) => {
         e.preventDefault();
         const rect = canvas.getBoundingClientRect();
@@ -815,50 +815,50 @@ function heartSlide() {
         mouseY = e.touches[0].clientY - rect.top;
         isInteracting = true;
     });
-
+    
     canvas.addEventListener('mouseleave', () => {
         mouseX = centerX;
         mouseY = centerY;
         isInteracting = false;
     });
-
+    
     let animationId;
     let time = 0;
     let glowPhase = 0;
-
+    
     function animate() {
         animationId = requestAnimationFrame(animate);
-
+        
         // مسح الشاشة بخلفية شفافة
         ctx.fillStyle = 'rgba(26, 10, 31, 0.08)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+        
         time += 0.01;
         glowPhase += 0.03;
-
+        
         // تحديث ورسم الجسيمات
         particles.forEach(particle => {
             // حركة مدارية حول نقطة القلب الأصلية
             particle.angle += particle.speed;
-
+            
             // حساب الموضع المستهدف مع حركة مدارية
             const orbitX = Math.cos(particle.angle + particle.timeOffset) * particle.orbitRadius;
             const orbitY = Math.sin(particle.angle + particle.timeOffset) * particle.orbitRadius;
-
+            
             // الموضع المستهدف (القلب + مدار)
             const targetPoint = heartPoint(particle.angle, 0.8);
             const targetX = targetPoint.x + orbitX;
             const targetY = targetPoint.y + orbitY;
-
+            
             // تأثير الماوس
             const dx = particle.x - mouseX;
             const dy = particle.y - mouseY;
             const distance = Math.sqrt(dx * dx + dy * dy);
-
+            
             if (isInteracting && distance < 100) {
                 const force = (100 - distance) / 100;
                 const angle = Math.atan2(dy, dx);
-
+                
                 particle.x += Math.cos(angle) * force * 3;
                 particle.y += Math.sin(angle) * force * 3;
             } else {
@@ -866,11 +866,11 @@ function heartSlide() {
                 particle.x += (targetX - particle.x) * 0.05;
                 particle.y += (targetY - particle.y) * 0.05;
             }
-
+            
             // حركة نابضية خفيفة
             const pulse = Math.sin(time + particle.timeOffset) * 0.5 + 0.5;
             const currentSize = particle.size * (0.8 + pulse * 0.2);
-
+            
             // رسم الجسيم مع توهج
             const gradient = ctx.createRadialGradient(
                 particle.x, particle.y, 0,
@@ -879,35 +879,35 @@ function heartSlide() {
             gradient.addColorStop(0, particle.color);
             gradient.addColorStop(0.7, particle.color.replace(')', ', 0.6)').replace('hsl', 'hsla'));
             gradient.addColorStop(1, 'transparent');
-
+            
             ctx.beginPath();
             ctx.arc(particle.x, particle.y, currentSize, 0, Math.PI * 2);
             ctx.fillStyle = gradient;
             ctx.fill();
-
+            
             // نقطة مركزية ساطعة
             ctx.beginPath();
             ctx.arc(particle.x, particle.y, currentSize * 0.4, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.fill();
         });
-
+        
         drawLetterA();
-
+        
         // رسم خطوط بين الجسيمات القريبة
         if (!isInteracting) {
             drawConnections();
         }
     }
-
+    
     function drawLetterA() {
         ctx.save();
-
+        
         const fontSize = heartSize * 0.6;
         ctx.font = `bold ${fontSize}px 'Arial', sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-
+        
         // تدرج لوني للحرف
         const gradient = ctx.createLinearGradient(
             centerX - heartSize * 0.3,
@@ -918,34 +918,34 @@ function heartSlide() {
         gradient.addColorStop(0, '#ffb6c1');
         gradient.addColorStop(0.5, '#ff69b4');
         gradient.addColorStop(1, '#ff1493');
-
+        
         // تأثير توهج متحرك
         const glowSize = 25 + Math.sin(glowPhase) * 10;
         ctx.shadowColor = '#ff69b4';
         ctx.shadowBlur = glowSize;
-
+        
         // رسم الحرف
         ctx.fillStyle = gradient;
         ctx.fillText('A', centerX, centerY);
-
+        
         // تأثير حدود
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 3;
         ctx.strokeText('A', centerX, centerY);
-
+        
         ctx.restore();
     }
-
+    
     function drawConnections() {
         ctx.strokeStyle = 'rgba(255, 182, 193, 0.1)';
         ctx.lineWidth = 0.5;
-
+        
         for (let i = 0; i < particles.length; i += 2) {
             for (let j = i + 1; j < Math.min(i + 10, particles.length); j++) {
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
-
+                
                 if (distance < 50) {
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
@@ -955,10 +955,10 @@ function heartSlide() {
             }
         }
     }
-
+    
     // بدء الرسوم المتحركة
     animate();
-
+    
     // زر الانتقال
     document.getElementById('nextFromHeart').addEventListener('click', () => {
         cancelAnimationFrame(animationId);
@@ -1193,16 +1193,16 @@ async function renderRomanticCardsSlide() {
           // تبديل من البطاقة الأولى إلى الثانية
           cardsEls[0].classList.remove("active-card");
           cardsEls[0].classList.add("prev-card");
-
+          
           cardsEls[1].classList.remove("next-card");
           cardsEls[1].classList.add("active-card");
-
+          
           currentCard = 1;
-
+          
         } else if (index === 1) {
           // عند النقر على زر "Next Slide" في البطاقة الثانية
           console.log("Next slide clicked - should go to next slide");
-
+          
           // التأكد من أن nextSlideCallback موجودة ويمكن استدعاؤها
           if (typeof nextSlideCallback === "function") {
             console.log("Calling nextSlideCallback");
@@ -1236,7 +1236,7 @@ function cakeSlide() {
     console.log("Cake slide loaded");
     // For debugging hit areas
      window.debugMode = true;
-
+    
     app.innerHTML = `
     <style>
     .cake-hint {
@@ -1244,7 +1244,7 @@ function cakeSlide() {
   bottom: 40px;          /* بأسفل الشاشة مع مسافة لطيفة */
   left: 50%;
   transform: translateX(-50%);
-
+  
   padding: 12px 22px;
   max-width: 90%;
   text-align: center;
@@ -1279,7 +1279,7 @@ function cakeSlide() {
   }
 }
     </style>
-        <div style="position: relative; width: 100%; height: 100vh;
+        <div style="position: relative; width: 100%; height: 100vh; 
              background: linear-gradient(135deg, #FFF5F8 0%, #FFE0ED 40%, #FFD1DC 70%, #FFC8DD 100%);
              display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <canvas id="cakeCanvas"></canvas>
@@ -1287,10 +1287,10 @@ function cakeSlide() {
                 position: absolute;
                 bottom: 25%;
                 left: 50%;
-                transform: translate(-50%, 50%);
+                transform: translate(-50%, 50%); 
                 display: none;
                 z-index: 10;
-                background: rgba(255, 105, 180, 0.2);
+                background: rgba(255, 105, 180, 0.2); 
                 border: 2px solid #ff69b4;
                 color: #ff1493;z-index: 999;">
 
@@ -1303,16 +1303,16 @@ function cakeSlide() {
 
     const canvas = document.getElementById('cakeCanvas');
     const ctx = canvas.getContext('2d');
-
+    
     // Set canvas size to be responsive
     function resizeCanvas() {
         canvas.width = Math.min(window.innerWidth, 800);
         canvas.height = Math.min(window.innerHeight, 700);
     }
-
+    
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-
+    
     // Cake and candle state
     const candles = [
         { x: 0.3, lit: true, opacity: 1, flameOffset: 0 },
@@ -1321,36 +1321,36 @@ function cakeSlide() {
         { x: 0.66, lit: true, opacity: 1, flameOffset: 1.5 },
         { x: 0.78, lit: true, opacity: 1, flameOffset: 2 }
     ];
-
+    
     let messageOpacity = 0;
     let messageGlow = 0;
     let time = 0;
     let allCandlesOut = false;
-
+    
     // Draw the elegant cake with new colors
     function drawCake() {
         const centerX = canvas.width / 2;
         const cakeWidth = canvas.width * 0.5;
         const cakeLeft = centerX - cakeWidth / 2;
-
+        
         // Bottom layer - لون كريمي فاتح
         ctx.fillStyle = '#FFF0F6';
         ctx.beginPath();
         drawRoundedRect(ctx, cakeLeft, canvas.height * 0.55, cakeWidth, canvas.height * 0.12, [0, 0, 8, 8]);
         ctx.fill();
-
-        // Middle layer - لون خوخي ناعم
+        
+        // Middle layer - لون خوخي ناعم  
         ctx.fillStyle = '#FFD1DC';
         ctx.beginPath();
         drawRoundedRect(ctx, cakeLeft + cakeWidth * 0.08, canvas.height * 0.48, cakeWidth * 0.84, canvas.height * 0.12, [0, 0, 6, 6]);
         ctx.fill();
-
+        
         // Top layer - لون وردي مشع
         ctx.fillStyle = '#FF8FA3';
         ctx.beginPath();
         drawRoundedRect(ctx, cakeLeft + cakeWidth * 0.15, canvas.height * 0.41, cakeWidth * 0.7, canvas.height * 0.12, [8, 8, 4, 4]);
         ctx.fill();
-
+        
         // "20 years" text on cake
         ctx.fillStyle = '#ff69b4';
         ctx.font = `${canvas.width * 0.04}px Georgia, serif`;
@@ -1358,13 +1358,13 @@ function cakeSlide() {
         ctx.textBaseline = 'middle';
         ctx.fillText('21 years', centerX, canvas.height * 0.47);
     }
-
+    
     // Helper function to draw rounded rectangles
     function drawRoundedRect(ctx, x, y, width, height, radius) {
         if (typeof radius === 'number') {
             radius = [radius, radius, radius, radius];
         }
-
+        
         ctx.moveTo(x + radius[0], y);
         ctx.lineTo(x + width - radius[1], y);
         ctx.quadraticCurveTo(x + width, y, x + width, y + radius[1]);
@@ -1376,29 +1376,29 @@ function cakeSlide() {
         ctx.quadraticCurveTo(x, y, x + radius[0], y);
         ctx.closePath();
     }
-
+    
     // Draw candles
     function drawCandles() {
         const centerX = canvas.width / 2;
         const cakeWidth = canvas.width * 0.5;
         const candleY = canvas.height * 0.41;
-
+        
         candles.forEach((candle, index) => {
             const x = centerX - cakeWidth / 2 + cakeWidth * candle.x;
-
+            
             // Candle stick
             ctx.fillStyle = candle.lit ? '#ffb3d9' : '#d4a5bb';
             ctx.fillRect(x - 2, candleY - 35, 4, 35);
-
+            
             // Decorative stripe on candle
             ctx.fillStyle = '#ff87c7';
             ctx.fillRect(x - 2, candleY - 15, 4, 3);
-
+            
             // Flame
             if (candle.lit && candle.opacity > 0) {
                 const flicker = Math.sin(time * 3 + candle.flameOffset) * 2;
                 const flameY = candleY - 38 + flicker;
-
+                
                 // Glow effect
                 const gradient = ctx.createRadialGradient(x, flameY, 0, x, flameY, 15);
                 gradient.addColorStop(0, `rgba(255, 200, 100, ${candle.opacity * 0.6})`);
@@ -1408,7 +1408,7 @@ function cakeSlide() {
                 ctx.beginPath();
                 ctx.arc(x, flameY, 15, 0, Math.PI * 2);
                 ctx.fill();
-
+                
                 // Flame shape
                 ctx.fillStyle = `rgba(255, 180, 100, ${candle.opacity})`;
                 ctx.beginPath();
@@ -1416,7 +1416,7 @@ function cakeSlide() {
                 ctx.bezierCurveTo(x - 4, flameY - 4, x - 4, flameY + 2, x, flameY + 4);
                 ctx.bezierCurveTo(x + 4, flameY + 2, x + 4, flameY - 4, x, flameY - 8);
                 ctx.fill();
-
+                
                 // Inner flame
                 ctx.fillStyle = `rgba(255, 220, 150, ${candle.opacity})`;
                 ctx.beginPath();
@@ -1425,17 +1425,17 @@ function cakeSlide() {
             }
         });
     }
-
+    
     // Draw birthday message
     function drawMessage() {
         if (messageOpacity > 0) {
             const centerX = canvas.width / 2;
             const messageY = canvas.height * 0.28;
-
+            
             // Glow effect
             ctx.shadowBlur = 20 + messageGlow * 10;
             ctx.shadowColor = `rgba(255, 179, 217, ${messageOpacity * 0.8})`;
-
+            
             // Main message with gradient
             const gradient = ctx.createLinearGradient(
                 centerX - 150, messageY,
@@ -1444,37 +1444,37 @@ function cakeSlide() {
             gradient.addColorStop(0, '#ff69b4');
             gradient.addColorStop(0.5, '#ff1493');
             gradient.addColorStop(1, '#ff0066');
-
+            
             ctx.fillStyle = gradient;
             ctx.font = `bold ${canvas.width * 0.055}px 'Georgia', 'Segoe UI', serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('Happy Birthday', centerX, messageY);
             ctx.fillText('My Love', centerX, messageY + canvas.width * 0.07);
-
+            
             ctx.shadowBlur = 0;
         }
     }
-
+    
     let cakeAnimationId;
-
+    
     // Animation loop
     function animateCake() {
         time += 0.016;
-
+        
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+        
         // Draw components
         drawCake();
         drawCandles();
-
+        
         // Check if all candles are out
         const allOut = candles.every(c => !c.lit);
         if (allOut && !allCandlesOut) {
             allCandlesOut = true;
         }
-
+        
         // Animate message
         if (allCandlesOut) {
             if (messageOpacity < 1) {
@@ -1489,9 +1489,9 @@ function cakeSlide() {
                 }
             }
         }
-
+        
         drawMessage();
-
+        
         // Fade out candles
         candles.forEach(candle => {
             if (!candle.lit && candle.opacity > 0) {
@@ -1499,86 +1499,86 @@ function cakeSlide() {
                 if (candle.opacity < 0) candle.opacity = 0;
             }
         });
-
+        
         cakeAnimationId = requestAnimationFrame(animateCake);
     }
-
+    
     // Handle interaction - FIXED VERSION
     function handleInteraction(x, y) {
         const centerX = canvas.width / 2;
         const cakeWidth = canvas.width * 0.5;
         const candleY = canvas.height * 0.41;
-
+        
         candles.forEach(candle => {
             const candleX = centerX - cakeWidth / 2 + cakeWidth * candle.x;
-
+            
             // Calculate distance from click to candle flame position
             const distance = Math.sqrt(Math.pow(x - candleX, 2) + Math.pow(y - (candleY - 38), 2));
-
+            
             if (distance < 25 && candle.lit) {
                 candle.lit = false;
                 console.log("🔥 Candle blown!");
             }
         });
     }
-
+    
     // Mouse/touch events - FIXED
     canvas.addEventListener('click', (e) => {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;    // Relationship bitmap vs. element for X
         const scaleY = canvas.height / rect.height;  // Relationship bitmap vs. element for Y
-
+        
         const x = (e.clientX - rect.left) * scaleX;
         const y = (e.clientY - rect.top) * scaleY;
-
+        
         handleInteraction(x, y);
     });
-
+    
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
-
+        
         const touch = e.touches[0];
         const x = (touch.clientX - rect.left) * scaleX;
         const y = (touch.clientY - rect.top) * scaleY;
-
+        
         handleInteraction(x, y);
     }, { passive: false });
-
+    
     // Add visual feedback when hovering over candles
     canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
-
+        
         const x = (e.clientX - rect.left) * scaleX;
         const y = (e.clientY - rect.top) * scaleY;
-
+        
         const centerX = canvas.width / 2;
         const cakeWidth = canvas.width * 0.5;
         const candleY = canvas.height * 0.41;
-
+        
         let isOverCandle = false;
         candles.forEach(candle => {
             if (candle.lit) {
                 const candleX = centerX - cakeWidth / 2 + cakeWidth * candle.x;
                 const distance = Math.sqrt(Math.pow(x - candleX, 2) + Math.pow(y - (candleY - 38), 2));
-
+                
                 if (distance < 25) {
                     isOverCandle = true;
                 }
             }
         });
-
+        
         // Change cursor when over candle
         canvas.style.cursor = isOverCandle ? 'pointer' : 'default';
     });
-
+    
     // Start animation
     animateCake();
-
+    
     // Add roundRect method if not exists
     if (!CanvasRenderingContext2D.prototype.roundRect) {
         CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
@@ -1594,7 +1594,7 @@ function cakeSlide() {
             return this;
         };
     }
-
+    
     // Next button event listener
     setTimeout(() => {
         const nextButton = document.getElementById('nextFromCake');
@@ -1606,13 +1606,13 @@ function cakeSlide() {
             });
         }
     }, 100);
-
+    
 
 }
 
 async function gallerySlide() {
     console.log("Gallery slide loaded");
-
+    
     // First show loading screen
     app.innerHTML = `
         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #f7f7f7 0%, #eef2f3 100%);">
@@ -1714,7 +1714,7 @@ async function gallerySlide() {
                 ">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-
+                
                 <button class="nav-btn next-btn" aria-label="Next" style="
                     position: absolute;
                     top: 50%;
@@ -1779,7 +1779,7 @@ async function gallerySlide() {
                         border-radius: 15px;
                         z-index: 15;
                         max-width: 80%;
-
+                        
                         transition: all 0.5s ease;
                         font-weight: 500;
                     ">${memories[0].caption}</div>
@@ -1831,7 +1831,7 @@ async function gallerySlide() {
                     justify-content: center;
                     background-color: white;
                     border-radius: 16px;
-                    box-shadow:
+                    box-shadow: 
                         0 15px 40px rgba(0, 0, 0, 0.15),
                         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
                     backface-visibility: hidden;
@@ -1867,7 +1867,7 @@ async function gallerySlide() {
                     transform: translateZ(0) rotateY(0deg) scale(1.05);
                     opacity: 1;
                     z-index: 10;
-                    box-shadow:
+                    box-shadow: 
                         0 25px 60px rgba(0, 0, 0, 0.2),
                         0 0 0 1px rgba(255, 255, 255, 0.2) inset;
                 }
@@ -2016,7 +2016,7 @@ async function gallerySlide() {
         const caption = document.querySelector('.caption');
         const counter = document.querySelector('.counter');
         const finishBtn = document.querySelector('.finish-gallery-btn');
-
+        
         let items = [];
         let currentIndex = 0;
         let hasInteracted = false;
@@ -2027,11 +2027,11 @@ async function gallerySlide() {
             itemEl.className = 'carousel-item';
             itemEl.dataset.index = index;
             itemEl.dataset.caption = item.caption;
-
+            
             // Create image container
             const imageContainer = document.createElement('div');
             imageContainer.className = 'image-container';
-
+            
             // Create image element
             const img = document.createElement('img');
             img.src = item.image;
@@ -2045,7 +2045,7 @@ async function gallerySlide() {
                 border-radius: 10px;
                 display: block;
             `;
-
+            
             // Preload image with error handling
             const preloadImg = new Image();
             preloadImg.src = item.image;
@@ -2068,10 +2068,10 @@ async function gallerySlide() {
                     </div>
                 `;
             };
-
+            
             imageContainer.appendChild(img);
             itemEl.appendChild(imageContainer);
-
+            
             // Set positions
             if (index === 0) {
                 itemEl.classList.add('active');
@@ -2122,12 +2122,12 @@ async function gallerySlide() {
             const captionText = items[currentIndex].dataset.caption;
             caption.textContent = captionText;
             caption.classList.add('visible');
-
+            
             // Update counter
             counter.textContent = `${currentIndex + 1} / ${memories.length}`;
-
+            
             // Remove visible class after animation
-
+         
         }
 
         // Button click handlers
@@ -2182,7 +2182,7 @@ async function gallerySlide() {
             }
         });
 
-
+        
         // Finish button click
         finishBtn.addEventListener('click', () => {
             console.log("Finish button clicked");
@@ -2190,13 +2190,13 @@ async function gallerySlide() {
         });
 
         // Show finish button after 10 seconds if no interaction
-
+        
     }
 }
 
 function renderExitScreen() {
     console.log("Exit screen loaded");
-
+    
     app.innerHTML = `
         <!DOCTYPE html>
         <html lang="en">
@@ -2397,11 +2397,11 @@ function renderExitScreen() {
                     .title {
                         font-size: 2.5rem;
                     }
-
+                    
                     .subtitle {
                         font-size: 1rem;
                     }
-
+                    
                     .message {
                         font-size: 1.2rem;
                         padding: 1rem;
@@ -2409,22 +2409,22 @@ function renderExitScreen() {
                     .message:nth-child(1){
                         margin-top: 650%;
                     }
-
+                    
                     .closing-message {
                         font-size: 1.5rem;
                     }
-
+                    
                     .controls {
                         flex-direction: column;
                         align-items: center;
                         gap: 1rem;
                     }
-
+                    
                     .btn {
                         width: 80%;
                         justify-content: center;
                     }
-
+                    
                     .signature {
                         font-size: 1.2rem;
                     }
@@ -2434,15 +2434,15 @@ function renderExitScreen() {
                     .title {
                         font-size: 2rem;
                     }
-
+                    
                     .message {
                         font-size: 1rem;
                     }
-
+                    
                     .closing-message {
                         font-size: 1.2rem;
                     }
-
+                    
                     .container {
                         padding: 1rem;
                     }
@@ -2451,19 +2451,19 @@ function renderExitScreen() {
         </head>
         <body>
             <canvas class="heart-canvas" id="heartCanvas"></canvas>
-
+            
             <div class="container">
                 <header class="header">
                     <h1 class="title">Thank You Najme </h1>
                     <p class="subtitle">For sharing this special moment</p>
                 </header>
-
+                
                 <div class="messages-container" id="messagesContainer">
                     <!-- Messages will be loaded here -->
                 </div>
-
-
-
+                
+                
+                
                 <div class="controls">
                     <button class="btn" id="replayBtn">
                     <i class="fas fa-redo"></i> Watch Again
@@ -2488,18 +2488,18 @@ function renderExitScreen() {
                         this.ctx = this.canvas.getContext('2d');
                         this.hearts = [];
                         this.rafId = null;
-
+                        
                         this.resizeCanvas();
                         window.addEventListener('resize', () => this.resizeCanvas());
-
+                        
                         this.startAnimation();
                     }
-
+                    
                     resizeCanvas() {
                         this.canvas.width = window.innerWidth;
                         this.canvas.height = window.innerHeight;
                     }
-
+                    
                     createHeart() {
                         const size = Math.random() * 30 + 10;
                         return {
@@ -2513,7 +2513,7 @@ function renderExitScreen() {
                             swayOffset: Math.random() * Math.PI * 2
                         };
                     }
-
+                    
                     getRandomHeartColor() {
                         const colors = [
                             'rgba(255, 182, 193, 0.8)', // Light pink
@@ -2527,13 +2527,13 @@ function renderExitScreen() {
                         ];
                         return colors[Math.floor(Math.random() * colors.length)];
                     }
-
+                    
                     drawHeart(ctx, x, y, size, color) {
                         ctx.save();
                         ctx.globalAlpha = color.split(',')[3].replace(')', '');
                         ctx.fillStyle = color;
                         ctx.beginPath();
-
+                        
                         // Draw a heart shape
                         ctx.moveTo(x, y);
                         ctx.bezierCurveTo(
@@ -2546,61 +2546,61 @@ function renderExitScreen() {
                             x + size/2, y - size/2,
                             x, y
                         );
-
+                        
                         ctx.fill();
                         ctx.restore();
                     }
-
+                    
                     updateHearts() {
                         // Add new hearts occasionally
                         if (Math.random() > 0.95) {
                             this.hearts.push(this.createHeart());
                         }
-
+                        
                         // Update and remove hearts
                         for (let i = this.hearts.length - 1; i >= 0; i--) {
                             const heart = this.hearts[i];
-
+                            
                             // Move up
                             heart.y -= heart.speed;
-
+                            
                             // Add subtle sway
                             heart.x += Math.sin(Date.now() / 1000 + heart.swayOffset) * heart.sway;
-
+                            
                             // Remove if off screen
                             if (heart.y < -heart.size * 2) {
                                 this.hearts.splice(i, 1);
                             }
                         }
                     }
-
+                    
                     render() {
                         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+                        
                         // Draw each heart
                         for (const heart of this.hearts) {
                             this.drawHeart(
-                                this.ctx,
-                                heart.x,
-                                heart.y,
-                                heart.size,
+                                this.ctx, 
+                                heart.x, 
+                                heart.y, 
+                                heart.size, 
                                 heart.color
                             );
                         }
                     }
-
+                    
                     animate() {
                         this.updateHearts();
                         this.render();
                         this.rafId = requestAnimationFrame(() => this.animate());
                     }
-
+                    
                     startAnimation() {
                         if (!this.rafId) {
                             this.animate();
                         }
                     }
-
+                    
                     stopAnimation() {
                         if (this.rafId) {
                             cancelAnimationFrame(this.rafId);
@@ -2615,7 +2615,7 @@ class MessageRenderer {
         this.container = document.getElementById(containerId);
         this.messages = [];
     }
-
+    
     async loadMessages() {
         try {
             const response = await fetch('data/messages.json');
@@ -2637,8 +2637,8 @@ class MessageRenderer {
             this.renderMessages();
         }
     }
-
-
+    
+    
     renderMessages() {
     console.log("renderMessages called");
     console.log("Messages loaded:", this.messages);
@@ -2653,7 +2653,7 @@ class MessageRenderer {
         textDiv.className = 'message-text';
         textDiv.textContent = msg.text;
 
-
+        
         messageEl.appendChild(textDiv);
         this.container.appendChild(messageEl);
     });

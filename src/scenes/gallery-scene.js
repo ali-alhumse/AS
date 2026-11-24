@@ -375,7 +375,7 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
         `;
 
         // Initialize the gallery
-        initGallery(memories);
+        return initGallery(memories);
 
     } catch (error) {
         console.error("Error in gallery:", error);
@@ -397,6 +397,7 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                 </button>
             </div>
         `;
+        return () => {};
     }
 
     function initGallery(memories) {
@@ -538,12 +539,12 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
         let startX = 0;
         let startY = 0;
 
-        document.addEventListener('touchstart', e => {
+        const handleTouchStart = (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
-        });
+        };
 
-        document.addEventListener('touchend', e => {
+        const handleTouchEnd = (e) => {
             const endX = e.changedTouches[0].clientX;
             const endY = e.changedTouches[0].clientY;
             const diffX = startX - endX;
@@ -559,16 +560,19 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                     goToIndex(currentIndex - 1);
                 }
             }
-        });
+        };
+        document.addEventListener('touchstart', handleTouchStart);
+        document.addEventListener('touchend', handleTouchEnd);
 
         // Keyboard navigation
-        document.addEventListener('keydown', e => {
+        const handleKeyDown = (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
                 goToIndex(currentIndex + 1);
             } else if (e.key === 'ArrowLeft') {
                 goToIndex(currentIndex - 1);
             }
-        });
+        };
+        document.addEventListener('keydown', handleKeyDown);
 
 
         // Finish button click
@@ -578,6 +582,10 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
         });
 
         // Show finish button after 10 seconds if no interaction
-
+        return () => {
+            document.removeEventListener('touchstart', handleTouchStart);
+            document.removeEventListener('touchend', handleTouchEnd);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
     }
 }

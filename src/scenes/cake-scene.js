@@ -281,7 +281,7 @@ export function renderCakeScene({ app, nextSlide }) {
             // Calculate distance from click to candle flame position
             const distance = Math.sqrt(Math.pow(x - candleX, 2) + Math.pow(y - (candleY - 38), 2));
 
-            if (distance < 25 && candle.lit) {
+            if (distance < 32 && candle.lit) {
                 candle.lit = false;
                 console.log("🔥 Candle blown!");
             }
@@ -332,7 +332,7 @@ export function renderCakeScene({ app, nextSlide }) {
                 const candleX = centerX - cakeWidth / 2 + cakeWidth * candle.x;
                 const distance = Math.sqrt(Math.pow(x - candleX, 2) + Math.pow(y - (candleY - 38), 2));
 
-                if (distance < 25) {
+                if (distance < 32) {
                     isOverCandle = true;
                 }
             }
@@ -362,16 +362,15 @@ export function renderCakeScene({ app, nextSlide }) {
     }
 
     // Next button event listener
-    setTimeout(() => {
-        const nextButton = document.getElementById('nextFromCake');
-        if (nextButton) {
-            nextButton.addEventListener('click', () => {
-                cancelAnimationFrame(cakeAnimationId);
-                window.removeEventListener('resize', resizeCanvas);
-                nextSlide();
-            });
-        }
-    }, 100);
+    const nextButton = document.getElementById('nextFromCake');
+    nextButton.addEventListener('click', () => {
+        cancelAnimationFrame(cakeAnimationId);
+        window.removeEventListener('resize', resizeCanvas);
+        nextSlide();
+    });
 
-
+    return () => {
+        cancelAnimationFrame(cakeAnimationId);
+        window.removeEventListener('resize', resizeCanvas);
+    };
 }

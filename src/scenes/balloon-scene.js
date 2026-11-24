@@ -475,4 +475,9 @@ export function renderBalloonScene({ app, nextSlide }) {
         window.removeEventListener("resize", handleResize);
         nextSlide();
     });
+
+    return () => {
+        cancelAnimationFrame(animationId);
+        window.removeEventListener("resize", handleResize);
+    };
 }

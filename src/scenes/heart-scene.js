@@ -243,4 +243,8 @@ export function renderHeartScene({ app, nextSlide }) {
         nextSlide();
     });
 
+    return () => {
+        cancelAnimationFrame(animationId);
+        window.removeEventListener('resize', resizeCanvas);
+    };
 }
