@@ -2,14 +2,14 @@ export function renderBalloonScene({ app, nextSlide }) {
     console.log("Balloon slide (fireworks) loaded");
 
     app.innerHTML = `
-        <div style="position: relative; width: 100%; height: 100vh; background: #111;">
+        <div class="scene-viewport balloon-viewport" style="background: #111;">
             <canvas id="balloonCanvas"></canvas>
             <button class="secondary-btn" id="skipBalloon"
                 style="
                 position: absolute;
-                bottom: 25%;
-                right: 50%;
-                transform: translate(50%, 50%);
+                bottom: calc(1.5rem + var(--safe-bottom));
+                left: 50%;
+                transform: translateX(-50%);
                 z-index: 10;
                 background: rgba(0,0,0,0.5);
                 color: white;">
@@ -20,8 +20,9 @@ export function renderBalloonScene({ app, nextSlide }) {
 
     const canvas = document.getElementById('balloonCanvas');
 
-    let w = (canvas.width = window.innerWidth),
-        h = (canvas.height = window.innerHeight),
+    let w = window.innerWidth,
+        h = window.innerHeight,
+        ratio = window.devicePixelRatio || 1,
         ctx = canvas.getContext("2d"),
         hw = w / 2,
         hh = h / 2,
@@ -74,6 +75,20 @@ export function renderBalloonScene({ app, nextSlide }) {
     Tau = Math.PI * 2,
     TauQuarter = Tau / 4,
     letters = [];
+
+    function resizeCanvas() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        ratio = window.devicePixelRatio || 1;
+        canvas.width = Math.round(w * ratio);
+        canvas.height = Math.round(h * ratio);
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        hw = w / 2;
+        hh = h / 2;
+        ctx.font = opts.charSize + "px Verdana";
+    }
 
     ctx.font = opts.charSize + "px Verdana";
 
@@ -435,18 +450,14 @@ export function renderBalloonScene({ app, nextSlide }) {
         }
     }
 
+    resizeCanvas();
+
     // بدء الرسوم المتحركة
     anim();
 
     // دالة handleResize للتعامل مع تغيير حجم النافذة
     function handleResize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-
-        hw = w / 2;
-        hh = h / 2;
-
-        ctx.font = opts.charSize + "px Verdana";
+        resizeCanvas();
 
         // إعادة إنشاء الحروف بالأبعاد الجديدة
         letters = [];

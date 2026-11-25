@@ -3,7 +3,7 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
 
     // First show loading screen
     app.innerHTML = `
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #f7f7f7 0%, #eef2f3 100%);">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100dvh; min-height: 100svh; overflow: hidden; background: linear-gradient(135deg, #f7f7f7 0%, #eef2f3 100%);">
             <div style="font-size: 24px; color: #ff69b4; margin-bottom: 20px;">
                 <i class="fa-solid fa-spinner fa-spin"></i>
             </div>
@@ -50,10 +50,9 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
         app.innerHTML = `
             <div class="gallery-container" style="
                 position: relative;
-                width: 90vw;
-                max-width: 900px;
-                height: 75vh;
-                max-height: 650px;
+                width: min(90vw, 900px);
+                height: min(75dvh, 650px);
+                max-height: calc(100dvh - 8rem);
                 perspective: 1200px;
                 margin: 20px auto;
                 overflow: hidden;
@@ -82,7 +81,7 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
-                    left: 20px;
+                    left: clamp(8px, 2vw, 20px);
                     width: 50px;
                     height: 50px;
                     background-color: rgba(255, 255, 255, 0.3);
@@ -107,7 +106,7 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
-                    right: 20px;
+                    right: clamp(8px, 2vw, 20px);
                     width: 50px;
                     height: 50px;
                     background-color: rgba(255, 255, 255, 0.3);
@@ -153,17 +152,18 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                     display: flex;
                     justify-content: center;
                     z-index: 15;
-                    // background-color: rgba(255, 255, 255, 0.7);
+                    /* background-color: rgba(255, 255, 255, 0.7); */
                     backdrop-filter: blur(5px);
                     -webkit-backdrop-filter: blur(5px);
                     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
                 ">
                     <div class="caption" style="
                         text-align: center;
-                        font-size: 1.1rem;
-                        line-height: 1.6;
+                        font-size: clamp(0.85rem, 3vw, 1.1rem);
+                        line-height: 1.5;
+                        overflow-wrap: anywhere;
                         color: #333;
-                        // padding: 18px 30px;
+                        /* padding: 18px 30px; */
                         border-radius: 15px;
                         z-index: 15;
                         max-width: 80%;
@@ -177,7 +177,9 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                 <button class="finish-gallery-btn" style="
                     position: absolute;
                     bottom: 10%;
-                    right: 50%;
+                    left: 50%;
+                    right: auto;
+                    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
                     padding: 14px 28px;
                     font-size: 1rem;
                     font-weight: 600;
@@ -193,7 +195,7 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                     align-items: center;
                     gap: 10px;
                     opacity: 1;
-                    transform: translate(50%,50%);
+                    transform: translateX(-50%);
                 ">
                     <i class="fas fa-heart"></i> Finish Show
                 </button>
@@ -305,7 +307,8 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
                 @media (max-width: 768px) {
                     .gallery-container {
                         width: 95vw;
-                        height: 65vh;
+                        height: min(65dvh, 620px);
+                        max-height: calc(100dvh - 10rem);
                     }
 
                     .carousel-item {
@@ -344,15 +347,17 @@ export async function renderGalleryScene({ app, nextSlide, endProject }) {
 
                     .finish-gallery-btn {
                         bottom: 20px;
-                        right: 20px;
+                        right: clamp(8px, 2vw, 20px);
                         padding: 12px 22px;
                         font-size: 0.9rem;
+                        max-width: min(90vw, 24rem);
                     }
                 }
 
                 @media (max-width: 480px) {
                     .gallery-container {
-                        height: 60vh;
+                        height: min(60dvh, 520px);
+                        max-height: calc(100dvh - 11rem);
                     }
 
                     .nav-btn {

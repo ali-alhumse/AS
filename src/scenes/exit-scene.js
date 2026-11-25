@@ -2,13 +2,7 @@ export async function renderExitScene({ app, onReplay }) {
     console.log("Exit screen loaded");
 
     app.innerHTML = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>The End of Slides</title>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <div class="exit-scene-root">
             <style>
                 * {
                     margin: 0;
@@ -16,22 +10,25 @@ export async function renderExitScene({ app, onReplay }) {
                     box-sizing: border-box;
                 }
 
-                body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                .exit-scene-root {
+                    position: relative;
+                    min-height: 100dvh;
+                    height: 100%;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
                     background: linear-gradient(135deg, #1a0a1e, #2d0f3a);
                     color: #fff;
-                    min-height: 100vh;
-                    overflow-y: scroll;
-                    position: relative;
                 }
 
                 .container {
                     max-width: 900px;
+                    width: min(100%, 900px);
                     margin: 0 auto;
-                    padding: 2rem;
+                    padding: clamp(1rem, 4vw, 2rem);
                     display: flex;
                     flex-direction: column;
-                    min-height: 100vh;
+                    min-height: 100dvh;
                     position: relative;
                     z-index: 10;
                 }
@@ -44,7 +41,7 @@ export async function renderExitScene({ app, onReplay }) {
                 }
 
                 .title {
-                    font-size: 3.5rem;
+                    font-size: clamp(2rem, 9vw, 3.5rem);
                     font-weight: 300;
                     letter-spacing: 2px;
                     margin-bottom: 1rem;
@@ -89,8 +86,9 @@ export async function renderExitScene({ app, onReplay }) {
                 }
 
                 .message {
-                    font-size: 1.5rem;
-                    line-height: 1.8;
+                    font-size: clamp(1rem, 4vw, 1.5rem);
+                    line-height: 1.65;
+                    overflow-wrap: anywhere;
                     text-align: center;
                     max-width: 700px;
                     margin: 1.5rem 0;
@@ -119,8 +117,9 @@ export async function renderExitScene({ app, onReplay }) {
 
                 .closing-message {
                     text-align: center;
-                    font-size: 2rem;
+                    font-size: clamp(1.25rem, 6vw, 2rem);
                     margin: 1.5rem 0;
+                    overflow-wrap: anywhere;
                     padding: 1.5rem;
                     border-radius: 15px;
                     background: rgba(255, 255, 255, 0.05);
@@ -210,10 +209,6 @@ export async function renderExitScene({ app, onReplay }) {
                         font-size: 1.2rem;
                         padding: 1rem;
                     }
-                    .message:nth-child(1){
-                        margin-top: 650%;
-                    }
-
                     .closing-message {
                         font-size: 1.5rem;
                     }
@@ -248,12 +243,15 @@ export async function renderExitScene({ app, onReplay }) {
                     }
 
                     .container {
-                        padding: 1rem;
+                        padding: 1rem 0.5rem;
+                    }
+
+                    .messages-container {
+                        max-height: 55dvh;
+                        padding-block: 1rem;
                     }
                 }
             </style>
-        </head>
-        <body>
             <canvas class="heart-canvas" id="heartCanvas"></canvas>
 
             <div class="container">
@@ -282,8 +280,7 @@ export async function renderExitScene({ app, onReplay }) {
                 </div>
 
             </div>
-        </body>
-        </html>
+        </div>
     `;
                 // Background Animation Module
                 class HeartBackground {

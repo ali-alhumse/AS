@@ -2,12 +2,12 @@ export function renderHeartScene({ app, nextSlide }) {
     console.log("Heart slide loaded");
 
     app.innerHTML = `
-        <div style="position: relative; width: 100%; height: 100vh; background: linear-gradient(to bottom, #1a0a1f, #0a0515);">
+        <div class="scene-viewport heart-viewport" style="background: linear-gradient(to bottom, #1a0a1f, #0a0515);">
             <canvas id="heartCanvas"></canvas>
             <button class="secondary-btn" id="nextFromHeart"
                 style="
                 position:absolute;
-                bottom: 20%;
+                bottom: calc(1.5rem + var(--safe-bottom));
                 left:50%;
                 transform:translate(-50%, 50%);
                 z-index:10;
@@ -23,21 +23,29 @@ export function renderHeartScene({ app, nextSlide }) {
     const ctx = canvas.getContext('2d');
 
     // ضبط حجم الكانفاس
+    let viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
+    let ratio = window.devicePixelRatio || 1;
+
     function resizeCanvas() {
-        const ratio = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * ratio;
-        canvas.height = window.innerHeight * ratio;
-        canvas.style.width = window.innerWidth + "px";
-        canvas.style.height = window.innerHeight + "px";
+        viewportWidth = window.innerWidth;
+        viewportHeight = window.innerHeight;
+        ratio = window.devicePixelRatio || 1;
+        canvas.width = Math.round(viewportWidth * ratio);
+        canvas.height = Math.round(viewportHeight * ratio);
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        centerX = viewportWidth / 2;
+        centerY = viewportHeight / 2;
+        heartSize = Math.min(viewportWidth, viewportHeight) * 0.4;
     }
 
+    let centerX = window.innerWidth / 2;
+    let centerY = window.innerHeight / 2;
+    let heartSize = Math.min(window.innerWidth, window.innerHeight) * 0.4;
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    const heartSize = Math.min(window.innerWidth, window.innerHeight) * 0.4;
 
     // معادلة القلب البارامترية الصحيحة
     function heartPoint(t, size = 1) {
@@ -108,7 +116,7 @@ export function renderHeartScene({ app, nextSlide }) {
 
         // مسح الشاشة بخلفية شفافة
         ctx.fillStyle = 'rgba(26, 10, 31, 0.08)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, viewportWidth, viewportHeight);
 
         time += 0.01;
         glowPhase += 0.03;

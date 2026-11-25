@@ -4,61 +4,12 @@ export function renderCakeScene({ app, nextSlide }) {
      window.debugMode = true;
 
     app.innerHTML = `
-    <style>
-    .cake-hint {
-  position: absolute;
-  bottom: 40px;          /* بأسفل الشاشة مع مسافة لطيفة */
-  left: 50%;
-  transform: translateX(-50%);
 
-  padding: 12px 22px;
-  max-width: 90%;
-  text-align: center;
-
-  font-size: 1rem;
-  font-weight: 500;
-  font-family: "Cairo", "Tajawal", system-ui, sans-serif;
-
-  color: #000;
-  background: rgba(255, 105, 180, 0.18);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  border-radius: 18px;
-  box-shadow:
-    0 8px 25px rgba(255, 105, 180, 0.25),
-    inset 0 0 0 1px rgba(255, 182, 213, 0.25);
-
-  animation: hintFloat 3s ease-in-out infinite;
-  z-index: 50;
-}
-
-/* حركة خفيفة رومانسية */
-@keyframes hintFloat {
-  0%, 100% {
-    transform: translateX(-50%) translateY(0);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translateX(-50%) translateY(-6px);
-    opacity: 1;
-  }
-}
-    </style>
-        <div style="position: relative; width: 100%; height: 100vh;
+        <div class="scene-viewport cake-viewport" style="
              background: linear-gradient(135deg, #FFF5F8 0%, #FFE0ED 40%, #FFD1DC 70%, #FFC8DD 100%);
              display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <canvas id="cakeCanvas"></canvas>
-            <button class="secondary-btn" id="nextFromCake" style="
-                position: absolute;
-                bottom: 25%;
-                left: 50%;
-                transform: translate(-50%, 50%);
-                display: none;
-                z-index: 10;
-                background: rgba(255, 105, 180, 0.2);
-                border: 2px solid #ff69b4;
-                color: #ff1493;z-index: 999;">
+            <button class="secondary-btn cake-continue" id="nextFromCake" style="display: none;">
 
                 <i class="fa-solid fa-arrow-right"></i>
                  Continue
@@ -71,9 +22,18 @@ export function renderCakeScene({ app, nextSlide }) {
     const ctx = canvas.getContext('2d');
 
     // Set canvas size to be responsive
+    let logicalWidth = 1;
+    let logicalHeight = 1;
+    let pixelRatio = 1;
+
     function resizeCanvas() {
-        canvas.width = Math.min(window.innerWidth, 800);
-        canvas.height = Math.min(window.innerHeight, 700);
+        const rect = canvas.getBoundingClientRect();
+        logicalWidth = Math.max(1, rect.width);
+        logicalHeight = Math.max(1, rect.height);
+        pixelRatio = window.devicePixelRatio || 1;
+        canvas.width = Math.round(logicalWidth * pixelRatio);
+        canvas.height = Math.round(logicalHeight * pixelRatio);
+        ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     }
 
     resizeCanvas();
@@ -95,34 +55,34 @@ export function renderCakeScene({ app, nextSlide }) {
 
     // Draw the elegant cake with new colors
     function drawCake() {
-        const centerX = canvas.width / 2;
-        const cakeWidth = canvas.width * 0.5;
+        const centerX = logicalWidth / 2;
+        const cakeWidth = logicalWidth * 0.5;
         const cakeLeft = centerX - cakeWidth / 2;
 
         // Bottom layer - لون كريمي فاتح
         ctx.fillStyle = '#FFF0F6';
         ctx.beginPath();
-        drawRoundedRect(ctx, cakeLeft, canvas.height * 0.55, cakeWidth, canvas.height * 0.12, [0, 0, 8, 8]);
+        drawRoundedRect(ctx, cakeLeft, logicalHeight * 0.55, cakeWidth, logicalHeight * 0.12, [0, 0, 8, 8]);
         ctx.fill();
 
         // Middle layer - لون خوخي ناعم
         ctx.fillStyle = '#FFD1DC';
         ctx.beginPath();
-        drawRoundedRect(ctx, cakeLeft + cakeWidth * 0.08, canvas.height * 0.48, cakeWidth * 0.84, canvas.height * 0.12, [0, 0, 6, 6]);
+        drawRoundedRect(ctx, cakeLeft + cakeWidth * 0.08, logicalHeight * 0.48, cakeWidth * 0.84, logicalHeight * 0.12, [0, 0, 6, 6]);
         ctx.fill();
 
         // Top layer - لون وردي مشع
         ctx.fillStyle = '#FF8FA3';
         ctx.beginPath();
-        drawRoundedRect(ctx, cakeLeft + cakeWidth * 0.15, canvas.height * 0.41, cakeWidth * 0.7, canvas.height * 0.12, [8, 8, 4, 4]);
+        drawRoundedRect(ctx, cakeLeft + cakeWidth * 0.15, logicalHeight * 0.41, cakeWidth * 0.7, logicalHeight * 0.12, [8, 8, 4, 4]);
         ctx.fill();
 
         // "20 years" text on cake
         ctx.fillStyle = '#ff69b4';
-        ctx.font = `${canvas.width * 0.04}px Georgia, serif`;
+        ctx.font = `${logicalWidth * 0.04}px Georgia, serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('21 years', centerX, canvas.height * 0.47);
+        ctx.fillText('21 years', centerX, logicalHeight * 0.47);
     }
 
     // Helper function to draw rounded rectangles
@@ -145,9 +105,9 @@ export function renderCakeScene({ app, nextSlide }) {
 
     // Draw candles
     function drawCandles() {
-        const centerX = canvas.width / 2;
-        const cakeWidth = canvas.width * 0.5;
-        const candleY = canvas.height * 0.41;
+        const centerX = logicalWidth / 2;
+        const cakeWidth = logicalWidth * 0.5;
+        const candleY = logicalHeight * 0.41;
 
         candles.forEach((candle, index) => {
             const x = centerX - cakeWidth / 2 + cakeWidth * candle.x;
@@ -195,8 +155,8 @@ export function renderCakeScene({ app, nextSlide }) {
     // Draw birthday message
     function drawMessage() {
         if (messageOpacity > 0) {
-            const centerX = canvas.width / 2;
-            const messageY = canvas.height * 0.28;
+            const centerX = logicalWidth / 2;
+            const messageY = logicalHeight * 0.28;
 
             // Glow effect
             ctx.shadowBlur = 20 + messageGlow * 10;
@@ -212,11 +172,11 @@ export function renderCakeScene({ app, nextSlide }) {
             gradient.addColorStop(1, '#ff0066');
 
             ctx.fillStyle = gradient;
-            ctx.font = `bold ${canvas.width * 0.055}px 'Georgia', 'Segoe UI', serif`;
+            ctx.font = `bold ${logicalWidth * 0.055}px 'Georgia', 'Segoe UI', serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('Happy Birthday', centerX, messageY);
-            ctx.fillText('My Love', centerX, messageY + canvas.width * 0.07);
+            ctx.fillText('My Love', centerX, messageY + logicalWidth * 0.07);
 
             ctx.shadowBlur = 0;
         }
@@ -229,7 +189,7 @@ export function renderCakeScene({ app, nextSlide }) {
         time += 0.016;
 
         // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, logicalWidth, logicalHeight);
 
         // Draw components
         drawCake();
@@ -271,9 +231,9 @@ export function renderCakeScene({ app, nextSlide }) {
 
     // Handle interaction - FIXED VERSION
     function handleInteraction(x, y) {
-        const centerX = canvas.width / 2;
-        const cakeWidth = canvas.width * 0.5;
-        const candleY = canvas.height * 0.41;
+        const centerX = logicalWidth / 2;
+        const cakeWidth = logicalWidth * 0.5;
+        const candleY = logicalHeight * 0.41;
 
         candles.forEach(candle => {
             const candleX = centerX - cakeWidth / 2 + cakeWidth * candle.x;
@@ -291,8 +251,8 @@ export function renderCakeScene({ app, nextSlide }) {
     // Mouse/touch events - FIXED
     canvas.addEventListener('click', (e) => {
         const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;    // Relationship bitmap vs. element for X
-        const scaleY = canvas.height / rect.height;  // Relationship bitmap vs. element for Y
+        const scaleX = logicalWidth / rect.width;    // Relationship bitmap vs. element for X
+        const scaleY = logicalHeight / rect.height;  // Relationship bitmap vs. element for Y
 
         const x = (e.clientX - rect.left) * scaleX;
         const y = (e.clientY - rect.top) * scaleY;
@@ -303,8 +263,8 @@ export function renderCakeScene({ app, nextSlide }) {
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
+        const scaleX = logicalWidth / rect.width;
+        const scaleY = logicalHeight / rect.height;
 
         const touch = e.touches[0];
         const x = (touch.clientX - rect.left) * scaleX;
@@ -316,15 +276,15 @@ export function renderCakeScene({ app, nextSlide }) {
     // Add visual feedback when hovering over candles
     canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
+        const scaleX = logicalWidth / rect.width;
+        const scaleY = logicalHeight / rect.height;
 
         const x = (e.clientX - rect.left) * scaleX;
         const y = (e.clientY - rect.top) * scaleY;
 
-        const centerX = canvas.width / 2;
-        const cakeWidth = canvas.width * 0.5;
-        const candleY = canvas.height * 0.41;
+        const centerX = logicalWidth / 2;
+        const cakeWidth = logicalWidth * 0.5;
+        const candleY = logicalHeight * 0.41;
 
         let isOverCandle = false;
         candles.forEach(candle => {

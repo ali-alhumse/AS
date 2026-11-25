@@ -1,43 +1,67 @@
 * {
-  box-sizing:border-box;
-  margin: 0; padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body {
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --touch-target: 44px;
+}
+
+html,
+body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   font-family: "Segoe UI", Tahoma, sans-serif;
   background: #0b0b14;
   color: #ffffff;
   overflow: hidden;
 }
 
+body {
+  min-height: 100dvh;
+}
+
 #app {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100svh;
+  overflow: hidden;
 }
 
 .slide {
   width: 100%;
   height: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 1.5rem;
+  padding: calc(1.5rem + var(--safe-top)) calc(1.5rem + var(--safe-right))
+    calc(1.5rem + var(--safe-bottom)) calc(1.5rem + var(--safe-left));
+  overflow: hidden;
 }
 
-.primary-btn, .secondary-btn {
+.primary-btn,
+.secondary-btn {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
   border: none;
-  border-radius:
-  30px; padding:
-  0.9rem 1.6rem;
-  font-size: 1rem;
-  display: flex;
+  border-radius: 30px;
+  padding: 0.75rem 1.6rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  cursor: pointer; }
+  cursor: pointer;
+  touch-action: manipulation;
+}
 
 .primary-btn {
   background: linear-gradient(135deg, #ff5fa2, #ff87c7);
@@ -48,37 +72,184 @@ html, body {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   backdrop-filter: blur(6px);
-  }
+}
 
-.primary-btn:active, .secondary-btn:active {
+.primary-btn:active,
+.secondary-btn:active {
   transform: scale(0.96);
-  }
+}
 
+.primary-btn:focus-visible,
+.secondary-btn:focus-visible,
+button:focus-visible {
+  outline: 2px solid #ffd166;
+  outline-offset: 3px;
+}
 
 .start-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
   background: radial-gradient(circle at top, #1b1b3a, #07070f);
+  overflow: hidden;
 }
 
 .start-slide h1 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  }
+  font-size: clamp(1.5rem, 7vw, 2rem);
+  margin-bottom: clamp(1rem, 5vh, 2rem);
+}
+
+.start-card {
+  width: min(100%, 34rem);
+  max-height: 100%;
+  padding: clamp(1rem, 5vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.start-title {
+  overflow-wrap: anywhere;
+}
+
+#daysBox {
+  font-size: clamp(3.5rem, 20vw, 5.625rem) !important;
+}
+
+#clockBox {
+  font-size: clamp(1.75rem, 9vw, 2.25rem) !important;
+  flex-wrap: wrap;
+}
+
+.start-slide .countdown-label,
+.start-slide .countdown-note {
+  font-size: clamp(0.7rem, 3vw, 1.125rem) !important;
+  overflow-wrap: anywhere;
+}
 
 .exit-slide h2 {
-  font-size: 1.6rem;
+  font-size: clamp(1.3rem, 5vw, 1.6rem);
   margin-bottom: 2rem;
 }
 
 .exit-actions {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
 }
 
-
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+.scene-viewport {
+  position: relative;
   width: 100%;
   height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.scene-viewport canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cake-viewport {
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe0ed 40%, #ffd1dc 70%, #ffc8dd 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cake-viewport #cakeCanvas {
+  width: min(100%, 50rem);
+  height: min(100%, 43.75rem);
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cake-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(2rem + var(--safe-bottom));
+  transform: translateX(-50%);
+  width: min(90%, 32rem);
+  padding: 0.75rem 1.25rem;
+  text-align: center;
+  font-size: clamp(0.8rem, 3.5vw, 1rem);
+  overflow-wrap: anywhere;
+  color: #000;
+  background: rgba(255, 105, 180, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(255, 105, 180, 0.25), inset 0 0 0 1px rgba(255, 182, 213, 0.25);
+  animation: hintFloat 3s ease-in-out infinite;
+  z-index: 50;
+}
+
+.cake-continue {
+  position: absolute;
+  left: 50%;
+  bottom: calc(5.5rem + var(--safe-bottom));
+  transform: translateX(-50%);
+  display: none;
+  z-index: 60;
+  color: #ff1493;
+  border: 2px solid #ff69b4;
+  background: rgba(255, 105, 180, 0.2);
+}
+
+@keyframes hintFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.85; }
+  50% { transform: translateX(-50%) translateY(-6px); opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .slide {
+    padding-inline: 1rem;
+  }
+
+  .cake-hint {
+    bottom: calc(1rem + var(--safe-bottom));
+  }
+
+  .cake-continue {
+    bottom: calc(4.75rem + var(--safe-bottom));
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .start-card {
+    padding-block: 0.5rem;
+  }
+
+  .start-slide h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .cake-hint {
+    width: min(70%, 30rem);
+    bottom: calc(0.5rem + var(--safe-bottom));
+  }
+
+  .cake-continue {
+    bottom: calc(3.5rem + var(--safe-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

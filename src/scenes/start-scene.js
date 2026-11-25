@@ -36,7 +36,6 @@ export function renderStartScene({ app, onReady }) {
 
         <div id="countdownWrap">
           <div id="daysBox" style="
-            font-size: 90px;
             font-weight: 900;
             line-height: 1;
             background: linear-gradient(160deg, #f0d080, #c8a84b);
@@ -45,7 +44,7 @@ export function renderStartScene({ app, onReady }) {
             background-clip: text;
             text-align: center;
           ">17</div>
-          <div style="text-align:center; font-size:18px; color:rgba(255,255,255,0.6); letter-spacing:3px; margin-bottom:20px;">
+          <div class="countdown-label" style="text-align:center; color:rgba(255,255,255,0.6); letter-spacing:3px; margin-bottom:20px;">
             يوماً متبقياً
           </div>
           <div id="clockBox" style="
@@ -53,7 +52,6 @@ export function renderStartScene({ app, onReady }) {
             gap: 6px;
             justify-content: center;
             align-items: center;
-            font-size: 36px;
             font-weight: 900;
             color: white;
           ">
@@ -63,7 +61,7 @@ export function renderStartScene({ app, onReady }) {
             <span style="opacity:0.4; animation: blink 1s infinite;">:</span>
             <span id="ckS">00</span>
           </div>
-          <div style="text-align:center; font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:2px; margin-top:8px;">
+          <div class="countdown-note" style="text-align:center; color:rgba(255,255,255,0.3); letter-spacing:2px; margin-top:8px;">
             الوقت المتبقي في اليوم الحالي
           </div>
         </div>

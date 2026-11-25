@@ -43,7 +43,8 @@ export async function renderCardsScene({ app, nextSlide }) {
       .romantic-slide-container {
         position: relative;
         width: 100%;
-        height: 100vh;
+        height: 100dvh;
+        min-height: 100svh;
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -78,9 +79,10 @@ export async function renderCardsScene({ app, nextSlide }) {
       .romantic-slide-container .romantic-slide-wrapper {
         position: relative;
         z-index: 5;
-        width: 90%;
+        width: min(90%, 620px);
         max-width: 620px;
-        height: 500px;
+        height: min(500px, calc(100dvh - 2rem));
+        max-height: calc(100dvh - 2rem);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -101,11 +103,13 @@ export async function renderCardsScene({ app, nextSlide }) {
         transform: translate(-50%, -50%) scale(0.95) rotateY(10deg);
         width: 100%;
         height: auto;
-        min-height: 450px;
+        min-height: 0;
         background: rgba(255,255,255,.12);
         backdrop-filter: blur(16px);
         border-radius: 30px;
-        padding: 40px 30px;
+        padding: clamp(1.25rem, 5vw, 2.5rem) clamp(1rem, 5vw, 1.875rem);
+        overflow-y: auto;
+        overflow-wrap: anywhere;
         text-align: center;
         transform-style: preserve-3d;
         opacity: 0;
@@ -154,7 +158,7 @@ export async function renderCardsScene({ app, nextSlide }) {
       }
 
       .romantic-slide-container .romantic-title {
-        font-size: 2.2rem;
+        font-size: clamp(1.35rem, 6vw, 2.2rem);
         margin-bottom: 20px;
         background: linear-gradient(90deg,#ff7eb3,#ffb3d9,#c9a0dc);
         -webkit-background-clip: text;
@@ -164,7 +168,7 @@ export async function renderCardsScene({ app, nextSlide }) {
       }
 
       .romantic-slide-container .romantic-message {
-        font-size: 1.25rem;
+        font-size: clamp(0.95rem, 3.8vw, 1.25rem);
         line-height: 1.9;
         color: rgba(255,255,255,.95);
         margin-bottom: 25px;
@@ -172,7 +176,7 @@ export async function renderCardsScene({ app, nextSlide }) {
       }
 
       .romantic-slide-container .signature {
-        font-size: 1.4rem;
+        font-size: clamp(1rem, 4.5vw, 1.4rem);
         font-weight: 700;
         color: #ffd166;
         margin-bottom: 25px;
@@ -182,8 +186,9 @@ export async function renderCardsScene({ app, nextSlide }) {
       .romantic-slide-container button {
         border: none;
         border-radius: 50px;
-        padding: 12px 30px;
-        font-size: 1.05rem;
+        padding: 0.75rem clamp(1rem, 6vw, 1.875rem);
+        min-height: 44px;
+        font-size: clamp(0.9rem, 3vw, 1.05rem);
         font-weight: 600;
         cursor: pointer;
         background: linear-gradient(135deg,#ff7eb3,#b967ff);
